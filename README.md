@@ -19,8 +19,28 @@ idf.py build flash monitor
 Current timing results:
 
 ```
-Initializing memory with random values...completed in 491437 us
-Perfoming 1048576 multiply-accumulates using SIMD...completed in 8618 us (121.672778 MMACS)
-Performing 1048576 multiply-accumulates using standard C...(accum -1075281920--needed to avoid being optimized out)...completed in 20628 us (50.832655 MMACS)
-Performing 1048576 FP multiply-accumulates using standard C...(accum 558403217753760595968.000000--needed to avoid being optimized out)...completed in 36000 us (29.127111 MMACS)
+Initializing memory with random values...completed in 491707 us
+Standard C test using int8
+---------------
+Performing 1048576 multiply-accumulates...(accum 0--needed to avoid being optimized out)...completed in 34887 us (30.056353 MMACS)
+---------------
+
+SIMD test using int8
+---------------
+Perfoming 1048576 multiply-accumulates...(accum 0)...completed in 8489 us (123.521734 MMACS)
+
+Standard C test using int16
+---------------
+Performing 1048576 multiply-accumulates...(accum -68815--needed to avoid being optimized out)...completed in 47609 us (22.024743 MMACS)
+---------------
+
+SIMD test using int16
+---------------
+Performing 1048576 multiply-accumulates...(accum -68815--needed to avoid being optimized out)...completed in 16562 us (63.312160 MMACS)
+---------------
+
+Standard C test using int32
+---------------
+Performing 1048576 multiply-accumulates...(accum -1019413636--needed to avoid being optimized out)...completed in 42689 us (24.563143 MMACS)
+---------------
 ```
