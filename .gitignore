@@ -53,3 +53,6 @@ dkms.conf
 
 # ESP32 build output
 build/
+dependencies.lock
+managed_components
+sdkconfig.old
