@@ -6,8 +6,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-const int N = 1024;
-const int M = 1024;
+const int N = 1024; // 128 for testing datasets that fit entirely in internal RAM
+const int M = 1024; // 128
 
 void calculateAndPrintMMACS(int numOps, int64_t startTime, int64_t endTime)
 {
@@ -67,6 +67,31 @@ void simdTestInt16(short* x, short* y)
     {
         dsps_dotprod_s16(&x[i*M], y, &z[i], N, 15);
     }    
+    int64_t endTime = esp_timer_get_time();
+
+    // To avoid optimizing out the above loop
+    int tmpAcc = 0;
+    for (int i = 0; i < N; i++)
+    {
+        tmpAcc += z[i];
+    }
+
+    // Print results
+    printf("(accum %d--needed to avoid being optimized out)...", tmpAcc);
+    calculateAndPrintMMACS(N * M, startTime, endTime);
+    printf("---------------\n\n");
+}
+
+void simdTestInt16Matrix(short* x, short* y)
+{
+    printf("SIMD test using int16 matrix fns\n");
+    printf("---------------\n");
+
+    printf("Performing %d multiply-accumulates...", N * M);
+    short z[M];
+
+    int64_t startTime = esp_timer_get_time();
+    dspm_mult_s16(x, y, z, M, N, 1, 15);
     int64_t endTime = esp_timer_get_time();
 
     // To avoid optimizing out the above loop
@@ -180,6 +205,7 @@ void app_main(void)
     simdTestInt8(x, (char*)y);
     stdCTest<short>("int16", (short*)x, (short*)y);
     simdTestInt16((short*)x, (short*)y);
+    simdTestInt16Matrix((short*)x, (short*)y);
     stdCTest<int>("int32", (int*)x, (int*)y);
     //stdCTest<float>("float");
 
