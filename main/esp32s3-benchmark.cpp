@@ -32,7 +32,7 @@ void stdCTest(char* name, T* x, T* y)
     for (int i = 0; i < M; i++)
     {
         T acc = 0;
-        ptr = &x[i*M];
+        ptr = &x[i*N];
         for (int j = 0; j < N; j++)
         {
             acc += *ptr++ * y[j];
@@ -124,7 +124,7 @@ void simdTestInt8(char* x, char* y)
     int p = N >> 4;
 
     asm volatile(
-        "movi a9, 0\n"                                                       // a9 = 0
+        "movi a9, 8\n"                                                       // a9 = 8
         "simd_loop_begin:\n"                                                 // while (n > 0) {
         "    movi a11, 0\n"                                                  //    a11 = 0
         "    loopgtz %[p], inner_loop_end\n"                                 //    while (p > 0) {
